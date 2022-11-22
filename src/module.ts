@@ -10,17 +10,17 @@ import type { Schema } from 'untyped'
 import untypedPlugin from 'untyped/babel-plugin'
 import jiti from 'jiti'
 
-export interface ModuleOptions extends Schema {
+declare module '@nuxt/schema' {
+  interface NuxtConfig { ['$schema']: Schema }
+  interface NuxtOptions { ['$schema']?: Schema }
+  interface NuxtHooks {
+    'schema:resolved': (schema: Schema) => void
+  }
 }
 
-export interface ModuleHooks {
-  'schema:resolved': (schema: Schema) => void
-}
-
-export default defineNuxtModule<ModuleOptions>({
+export default defineNuxtModule({
   meta: {
-    name: 'nuxt-config-schema',
-    configKey: '$schema'
+    name: 'nuxt-config-schema'
   },
   async setup (_options, nuxt) {
     // Initialize untyped loaded with jiti
@@ -47,6 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
         const filePath = tryResolve(resolve(layer.config.rootDir, file))
         if (filePath && existsSync(filePath)) {
           let loadedConfig = _require(filePath)
+          delete loadedConfig.$schema
           if (file === 'app.config') {
             loadedConfig = { appConfig: loadedConfig }
           }
