@@ -35,7 +35,7 @@ export default defineNuxtConfig({
 })
 ```
 
-You can access generated schema (json, markdown and types) from `.nuxt/schema/` directory and also `nuxt-schema:schema` hook.
+You can access generated schema (json, markdown and types) from `.nuxt/schema/` directory and also `schema:resolved(schema)` hook from other modules.
 
 ## Development
 
