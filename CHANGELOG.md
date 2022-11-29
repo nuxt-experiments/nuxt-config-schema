@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/pi0/nuxt-config-schema/compare/v0.3.1...v0.3.2) (2022-11-29)
+
+
+### Features
+
+* allow chaining resolvers with upper layer ([84c215f](https://github.com/pi0/nuxt-config-schema/commit/84c215fb91b6705a9c74e45d8fe55840d5517d2b))
+
 ### [0.3.1](https://github.com/pi0/nuxt-config-schema/compare/v0.3.0...v0.3.1) (2022-11-29)
 
 ## [0.3.0](https://github.com/pi0/nuxt-config-schema/compare/v0.2.1...v0.3.0) (2022-11-29)
