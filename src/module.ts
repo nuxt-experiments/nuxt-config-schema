@@ -40,6 +40,13 @@ export default defineNuxtModule({
     })
     const tryResolve = (id: string) => { try { return _require.resolve(id) } catch (err) {} }
 
+    // Mock defineAppConfig and defineNuxtConfig globals
+    const fn = (val: any) => val
+    // @ts-ignore
+    globalThis.defineNuxtConfig = globalThis.defineNuxtConfig || fn
+    // @ts-ignore
+    globalThis.defineAppConfig = globalThis.defineAppConfig || fn
+
     // Scan for config sources to infer schema
     const configs = []
     for (const layer of nuxt.options._layers) {
