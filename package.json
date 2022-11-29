@@ -15,10 +15,12 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build",
+    "build": "nuxt-module-build",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground"
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "release": "pnpm test && pnpm build && standard-version && npm publish && git push --follow-tags",
+    "test": "true"
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0",
@@ -33,6 +35,7 @@
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@types/node": "^18.11.9",
     "eslint": "^8.27.0",
-    "nuxt": "^3.0.0"
+    "nuxt": "^3.0.0",
+    "standard-version": "^9.5.0"
   }
 }
