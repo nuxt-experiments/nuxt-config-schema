@@ -24,11 +24,15 @@ export default defineNuxtModule({
   },
   async setup (_options, nuxt) {
     // Initialize untyped loaded with jiti
+    const mockedImports = fileURLToPath(new URL('./runtime/virtual-imports.ts', import.meta.url))
     const _require = jiti(dirname(import.meta.url), {
       esmResolve: true,
       interopDefault: true,
       alias: {
-        '#imports': fileURLToPath(new URL('./runtime/virtual-imports.ts', import.meta.url))
+        '#imports': mockedImports,
+        '@nuxt/kit': mockedImports,
+        '#app': mockedImports,
+        'nuxt/app': mockedImports
       },
       transformOptions: {
         babel: {
