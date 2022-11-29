@@ -87,11 +87,11 @@ export default defineNuxtModule({
     const userSchema = await resolveSchema(nuxt.options.$schema)
     const schema = _defu(inferedSchema, userSchema)
 
-    // Merge defaults to nuxt options
-    nuxt.options = _defu(nuxt.options, schema.default as any) as any
-
     // Allow hooking
     await nuxt.hooks.callHook('schema:resolved', schema)
+
+    // Merge defaults to nuxt options
+    nuxt.options = _defu(nuxt.options, schema.default as any) as any
 
     // Write it to build dir
     await mkdir(resolve(nuxt.options.buildDir, 'schema'), { recursive: true })
