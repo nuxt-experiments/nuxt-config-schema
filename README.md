@@ -30,6 +30,24 @@ export default defineNuxtConfig({
 })
 ```
 
+3. Create `nuxt.schema.ts`:
+
+```ts
+export default defineNuxtConfigSchema({
+  appConfig: {
+    test2: {
+      $default: 'from nuxt.schema'
+    }
+  },
+  /** Config schema for another integration */
+  anotherConfig: {
+    aTest: '123'
+  }
+})
+```
+
+4. Use `nuxi dev` or `nuxi build` commands
+
 You can access generated schema (json, markdown and types) from `.nuxt/schema/` directory and also `schema:resolved(schema)` hook from other modules.
 
 ## Development

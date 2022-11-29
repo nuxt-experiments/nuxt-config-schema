@@ -1,13 +1,11 @@
-import { defineUntypedSchema } from 'untyped'
-
-export default defineUntypedSchema({
+export default defineNuxtConfigSchema({
   appConfig: {
     test2: {
       $default: 'from nuxt.schema'
     }
   },
   /** Config schema for another integration */
-  anothetConfig: {
+  anotherConfig: {
     aTest: '123'
   }
 })

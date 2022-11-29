@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url'
 import { existsSync } from 'node:fs'
 import { writeFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'pathe'
@@ -6,20 +5,28 @@ import { defu, createDefu } from 'defu'
 import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import { resolveSchema, generateMarkdown, generateTypes } from 'untyped'
 import type { Schema, SchemaDefinition } from 'untyped'
-import type { NuxtConfig } from '@nuxt/schema'
 // @ts-ignore
 import untypedPlugin from 'untyped/babel-plugin'
 import jiti from 'jiti'
 
+// TODO: Merge with raw schema of Nuxt for better type hints
+export type NuxtConfigSchema = SchemaDefinition
+
 declare module '@nuxt/schema' {
-  interface NuxtConfig { ['$schema']?: SchemaDefinition }
-  interface NuxtOptions { ['$schema']: SchemaDefinition }
+  interface NuxtConfig { ['$schema']?: NuxtConfigSchema }
+  interface NuxtOptions { ['$schema']: NuxtConfigSchema }
   interface NuxtHooks {
     'schema:resolved': (schema: Schema) => void
   }
 }
 
-export type NuxtSchema = NuxtConfig & SchemaDefinition
+declare module 'nuxt/config' {
+  export function defineNuxtConfigSchema (schema: NuxtConfigSchema): NuxtConfigSchema
+}
+
+declare global {
+  const defineNuxtConfigSchema: (schema: NuxtConfigSchema) => NuxtConfigSchema
+}
 
 export default defineNuxtModule({
   meta: {
@@ -36,7 +43,8 @@ export default defineNuxtModule({
       cache: false,
       requireCache: false,
       alias: {
-        '#imports': virtualImports
+        '#imports': virtualImports,
+        'nuxt/config': virtualImports
       },
       transformOptions: {
         babel: {
@@ -48,12 +56,10 @@ export default defineNuxtModule({
     })
     const tryResolve = (id: string) => { try { return _require.resolve(id) } catch (err) {} }
 
-    // Mock defineAppConfig and defineNuxtConfig globals
+    // Global import
     const fn = (val: any) => val
     // @ts-ignore
-    globalThis.defineNuxtConfig = globalThis.defineNuxtConfig || fn
-    // @ts-ignore
-    globalThis.defineAppConfig = globalThis.defineAppConfig || fn
+    globalThis.defineNuxtConfigSchema = globalThis.defineNuxtConfigSchema || fn
 
     // Scan for config sources to infer schema
     const configs = []
