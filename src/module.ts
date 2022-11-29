@@ -2,17 +2,17 @@ import { fileURLToPath } from 'node:url'
 import { existsSync } from 'node:fs'
 import { writeFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'pathe'
-import { defu } from 'defu'
+import { defu, createDefu } from 'defu'
 import { defineNuxtModule } from '@nuxt/kit'
 import { resolveSchema, generateMarkdown, generateTypes } from 'untyped'
-import type { Schema } from 'untyped'
+import type { Schema, SchemaDefinition } from 'untyped'
 // @ts-ignore
 import untypedPlugin from 'untyped/babel-plugin'
 import jiti from 'jiti'
 
 declare module '@nuxt/schema' {
-  interface NuxtConfig { ['$schema']: Schema }
-  interface NuxtOptions { ['$schema']?: Schema }
+  interface NuxtConfig { ['$schema']?: SchemaDefinition }
+  interface NuxtOptions { ['$schema']: SchemaDefinition }
   interface NuxtHooks {
     'schema:resolved': (schema: Schema) => void
   }
@@ -63,13 +63,23 @@ export default defineNuxtModule({
       }
     }
 
-    // Meged config sources and resolve schema
+    // Create custom merger to dedup defaults in arrays
+    const _defu = createDefu((obj, key, value) => {
+      if (Array.isArray(obj[key]) && Array.isArray(value)) {
+        (obj as any)[key] = Array.from(new Set([...obj[key], ...value]))
+        return true
+      }
+    })
+
+    // Merge config sources and resolve schema
     // @ts-expect-error
     const meergedConfigs = defu(...configs)
     const inferedSchema = await resolveSchema(meergedConfigs)
+    const userSchema = await resolveSchema(nuxt.options.$schema)
+    const schema = _defu(inferedSchema, userSchema)
 
-    // Merge with direct schema
-    const schema = defu(inferedSchema, nuxt.options.$schema)
+    // Merge defaults to nuxt options
+    nuxt.options = _defu(nuxt.options, schema.default as any) as any
 
     // Allow hooking
     await nuxt.hooks.callHook('schema:resolved', schema)
