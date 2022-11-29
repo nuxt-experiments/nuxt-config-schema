@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/pi0/nuxt-config-schema/compare/v0.3.2...v0.3.3) (2022-11-29)
+
+
+### Features
+
+* schema declarations for `nuxt.config` and `app.config` ([011e3e3](https://github.com/pi0/nuxt-config-schema/commit/011e3e366c8dc6bdd693905c1d25eb0f3fc0e1a0))
+
 ### [0.3.2](https://github.com/pi0/nuxt-config-schema/compare/v0.3.1...v0.3.2) (2022-11-29)
 
 
