@@ -1,10 +1,11 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
+  // Direct schema defenition
   $schema: {
     appConfig: {
-      test: {
-        $default: 'test',
+      test1: {
+        $default: 'from nuxt config',
         $schema: {
           description: 'manual description'
         }
@@ -16,9 +17,5 @@ export default defineNuxtConfig({
   ],
   extends: [
     './base'
-  ],
-  appConfig: {
-    /** Configuration from nuxt.config */
-    test2: 2
-  }
+  ]
 })

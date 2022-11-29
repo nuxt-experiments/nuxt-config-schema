@@ -2,12 +2,7 @@
 
 This is a proof of concept module for a feature in Nuxt 3 that automatically infers and generates schema based on user provided configuration from several sources using [unjs/untyped](https://github.com/unjs/untyped) and supports extending layers.
 
-Supported sources:
-
-  - `nuxt.config.*`
-  - `nuxt.schema.*`
-  - `app.config.*` (limited)
-  - `$schema` key in `nuxt.config` (direct schema defenition)
+Schema can be defined in `nuxt.schema.ts` or `$schema` field in `nuxt.config.ts`.
 
 ## Usage
 

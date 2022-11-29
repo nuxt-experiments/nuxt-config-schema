@@ -2,11 +2,12 @@ import { defineUntypedSchema } from 'untyped'
 
 export default defineUntypedSchema({
   appConfig: {
-    test_from_schema: {
-      $default: 'test',
-      $schema: {
-        description: 'manual description'
-      }
+    test2: {
+      $default: 'from nuxt.schema'
     }
+  },
+  /** Config schema for another integration */
+  anothetConfig: {
+    aTest: '123'
   }
 })

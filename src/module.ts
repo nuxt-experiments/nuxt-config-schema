@@ -3,9 +3,10 @@ import { existsSync } from 'node:fs'
 import { writeFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'pathe'
 import { defu, createDefu } from 'defu'
-import { defineNuxtModule } from '@nuxt/kit'
+import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import { resolveSchema, generateMarkdown, generateTypes } from 'untyped'
 import type { Schema, SchemaDefinition } from 'untyped'
+import type { NuxtConfig } from '@nuxt/schema'
 // @ts-ignore
 import untypedPlugin from 'untyped/babel-plugin'
 import jiti from 'jiti'
@@ -18,21 +19,24 @@ declare module '@nuxt/schema' {
   }
 }
 
+export type NuxtSchema = NuxtConfig & SchemaDefinition
+
 export default defineNuxtModule({
   meta: {
     name: 'nuxt-config-schema'
   },
-  async setup (_options, nuxt) {
+  async setup (options, nuxt) {
+    const resolver = createResolver(import.meta.url)
+
     // Initialize untyped loaded with jiti
-    const mockedImports = fileURLToPath(new URL('./runtime/virtual-imports.ts', import.meta.url))
+    const virtualImports = await resolver.resolvePath('./runtime/virtual-imports')
     const _require = jiti(dirname(import.meta.url), {
       esmResolve: true,
       interopDefault: true,
+      cache: false,
+      requireCache: false,
       alias: {
-        '#imports': mockedImports,
-        '@nuxt/kit': mockedImports,
-        '#app': mockedImports,
-        'nuxt/app': mockedImports
+        '#imports': virtualImports
       },
       transformOptions: {
         babel: {
@@ -54,22 +58,17 @@ export default defineNuxtModule({
     // Scan for config sources to infer schema
     const configs = []
     for (const layer of nuxt.options._layers) {
-      for (const file of [layer.configFile, 'app.config', 'nuxt.schema']) {
-        const filePath = tryResolve(resolve(layer.config.rootDir, file))
-        if (filePath && existsSync(filePath)) {
-          let loadedConfig
-          try {
-            loadedConfig = _require(filePath)
-          } catch (err) {
-            // eslint-disable-next-line no-console
-            console.warn('[nuxt-config-schema] Unable to load schema from', filePath, err)
-          }
-          delete loadedConfig.$schema
-          if (file === 'app.config') {
-            loadedConfig = { appConfig: loadedConfig }
-          }
-          configs.push(loadedConfig)
+      const filePath = tryResolve(resolve(layer.config.rootDir, 'nuxt.schema'))
+      if (filePath && existsSync(filePath)) {
+        let loadedConfig
+        try {
+          loadedConfig = _require(filePath)
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn('[nuxt-config-schema] Unable to load schema from', filePath, err)
+          continue
         }
+        configs.push(loadedConfig)
       }
     }
 
