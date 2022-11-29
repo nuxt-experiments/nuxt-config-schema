@@ -53,7 +53,13 @@ export default defineNuxtModule({
       for (const file of [layer.configFile, 'app.config', 'nuxt.schema']) {
         const filePath = tryResolve(resolve(layer.config.rootDir, file))
         if (filePath && existsSync(filePath)) {
-          let loadedConfig = _require(filePath)
+          let loadedConfig
+          try {
+            loadedConfig = _require(filePath)
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.warn('[nuxt-config-schema] Unable to load schema from', filePath, err)
+          }
           delete loadedConfig.$schema
           if (file === 'app.config') {
             loadedConfig = { appConfig: loadedConfig }
