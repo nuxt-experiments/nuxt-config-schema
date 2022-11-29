@@ -64,20 +64,20 @@ export default defineNuxtModule({
       ctx.references.push({ path: 'nuxt-config-schema' })
     })
 
-    // Scan for config sources to infer schema
-    const configs = []
+    // Load schema from layers
+    const schemas: Schema[] = []
     for (const layer of nuxt.options._layers) {
       const filePath = tryResolve(resolve(layer.config.rootDir, 'nuxt.schema'))
       if (filePath && existsSync(filePath)) {
         let loadedConfig
-        try {
-          loadedConfig = _require(filePath)
-        } catch (err) {
+        try { loadedConfig = _require(filePath) } catch (err) {
           // eslint-disable-next-line no-console
           console.warn('[nuxt-config-schema] Unable to load schema from', filePath, err)
           continue
         }
-        configs.push(loadedConfig)
+        const lastLayerDefaults = schemas.length ? schemas[schemas.length - 1].default as any : {}
+        const schema = await resolveSchema(loadedConfig, lastLayerDefaults)
+        schemas.push(schema)
       }
     }
 
@@ -91,10 +91,9 @@ export default defineNuxtModule({
 
     // Merge config sources and resolve schema
     // @ts-expect-error
-    const meergedConfigs = defu(...configs)
-    const inferedSchema = await resolveSchema(meergedConfigs)
-    const userSchema = await resolveSchema(nuxt.options.$schema)
-    const schema = _defu(inferedSchema, userSchema)
+    const mergedSchema = _defu(...schemas) as Schema
+    const userSchema = await resolveSchema(nuxt.options.$schema, mergedSchema.default as any)
+    const schema = _defu(userSchema, mergedSchema)
 
     // Allow hooking
     await nuxt.hooks.callHook('schema:resolved', schema)
