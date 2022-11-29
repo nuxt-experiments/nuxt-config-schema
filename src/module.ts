@@ -60,6 +60,9 @@ export default defineNuxtModule({
     const fn = (val: any) => val
     // @ts-ignore
     globalThis.defineNuxtConfigSchema = globalThis.defineNuxtConfigSchema || fn
+    nuxt.hook('prepare:types', (ctx) => {
+      ctx.references.push({ path: 'nuxt-config-schema' })
+    })
 
     // Scan for config sources to infer schema
     const configs = []
