@@ -12,6 +12,12 @@ export default defineNuxtConfig({
       }
     }
   },
+  appConfig: {
+    test1: '123'
+  },
+  anotherConfig: {
+
+  },
   modules: [
     '../src/module'
   ],

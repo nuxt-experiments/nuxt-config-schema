@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import { writeFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'pathe'
-import { defu, createDefu } from 'defu'
+import { createDefu } from 'defu'
 import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import { resolveSchema, generateMarkdown, generateTypes } from 'untyped'
 import type { Schema, SchemaDefinition } from 'untyped'
@@ -60,9 +60,6 @@ export default defineNuxtModule({
     const fn = (val: any) => val
     // @ts-ignore
     globalThis.defineNuxtConfigSchema = globalThis.defineNuxtConfigSchema || fn
-    nuxt.hook('prepare:types', (ctx) => {
-      ctx.references.push({ path: 'nuxt-config-schema' })
-    })
 
     // Load schema from layers
     const schemas: Schema[] = []
@@ -106,7 +103,27 @@ export default defineNuxtModule({
     await writeFile(resolve(nuxt.options.buildDir, 'schema/nuxt.schema.json'), JSON.stringify(schema, null, 2), 'utf8')
     const markdown = '# User config schema' + generateMarkdown(schema)
     await writeFile(resolve(nuxt.options.buildDir, 'schema/nuxt.schema.md'), markdown, 'utf8')
-    const types = generateTypes(schema, { addExport: true, interfaceName: 'NuxtUserConfig' })
-    await writeFile(resolve(nuxt.options.buildDir, 'schema/nuxt.schema.d.ts'), types, 'utf8')
+    const _types = generateTypes(schema, {
+      addExport: true,
+      interfaceName: 'NuxtUserConfig',
+      partial: true
+    })
+    const types = _types + `
+export type UserAppConfig = Exclude<NuxtUserConfig['appConfig'], undefined>
+
+declare module '@nuxt/schema' {
+  interface NuxtConfig extends NuxtUserConfig {}
+  interface NuxtOptions extends NuxtUserConfig {}
+  interface AppConfigInput extends UserAppConfig {}
+  interface AppConfig extends UserAppConfig {}
+}`
+    const typesPath = resolve(nuxt.options.buildDir, 'schema/nuxt.schema.d.ts')
+    await writeFile(typesPath, types, 'utf8')
+
+    // Register types
+    nuxt.hook('prepare:types', (ctx) => {
+      ctx.references.push({ path: 'nuxt-config-schema' })
+      ctx.references.push({ path: 'schema/nuxt.schema.d.ts' })
+    })
   }
 })
