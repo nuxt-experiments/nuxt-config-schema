@@ -1,5 +1,11 @@
 export default defineNuxtConfigSchema({
   appConfig: {
+    /**
+     * An optional configuration
+     *
+     * @type {string}
+     */
+    optional: undefined,
     test2: {
       $default: 'from nuxt.schema'
     },
