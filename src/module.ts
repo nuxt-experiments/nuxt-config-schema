@@ -17,6 +17,8 @@ declare module '@nuxt/schema' {
   interface NuxtOptions { ['$schema']: NuxtConfigSchema }
   interface NuxtHooks {
     'schema:resolved': (schema: Schema) => void
+    'schema:beforeWrite': (schema: Schema) => void
+    'schema:written': () => void
   }
 }
 
@@ -66,15 +68,20 @@ export default defineNuxtModule({
     })
 
     // Resolve schema after all modules initialized
+    let schema: Schema
     nuxt.hook('modules:done', async () => {
       // Resolve schema
-      const schema = await resolveSchema()
+      schema = await resolveSchema()
 
       // Apply defaults to nuxt options
       nuxt.options = _defu(nuxt.options, schema.default as any) as any
+    })
 
-      // Write schema
+    // Writie schema after build to allow further modifications
+    nuxt.hooks.hook('build:done', async () => {
+      await nuxt.hooks.callHook('schema:beforeWrite', schema)
       await writeSchema(schema)
+      await nuxt.hooks.callHook('schema:written')
     })
 
     // --- Bound utils ---
