@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.7](https://github.com/pi0/nuxt-config-schema/compare/v0.3.6...v0.3.7) (2022-12-21)
+
+
+### Features
+
+* `schema:beforeWrite` and `schema:written` hooks ([a152530](https://github.com/pi0/nuxt-config-schema/commit/a1525300e4ca499ffb9f514d3206aa71a5340b44))
+
 ### [0.3.6](https://github.com/pi0/nuxt-config-schema/compare/v0.3.5...v0.3.6) (2022-12-14)
 
 ### [0.3.5](https://github.com/pi0/nuxt-config-schema/compare/v0.3.4...v0.3.5) (2022-12-13)
