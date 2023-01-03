@@ -78,11 +78,7 @@ export default defineNuxtModule({
     // Resolve schema after all modules initialized
     let schema: Schema
     nuxt.hook('modules:done', async () => {
-      // Resolve schema
       schema = await resolveSchema()
-
-      // Apply defaults to nuxt options
-      nuxt.options = _defu(nuxt.options, schema.default as any) as any
     })
 
     // Writie schema after build to allow further modifications
