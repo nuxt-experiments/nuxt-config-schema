@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/pi0/nuxt-config-schema/compare/v0.3.8...v0.4.0) (2023-01-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* avoid merging schema defaults to nuxt config
+
+* avoid merging schema defaults to nuxt config ([fa095d1](https://github.com/pi0/nuxt-config-schema/commit/fa095d14f034b668397bf62156fe5a2fe7d29c00))
+
 ### [0.3.8](https://github.com/pi0/nuxt-config-schema/compare/v0.3.7...v0.3.8) (2023-01-03)
 
 ### [0.3.7](https://github.com/pi0/nuxt-config-schema/compare/v0.3.6...v0.3.7) (2022-12-21)
