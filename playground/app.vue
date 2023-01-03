@@ -1,10 +1,10 @@
 <template>
   <div>
-    Nuxt module playground!
-    App Config: {{ useAppConfig() }}
+    <h1>Nuxt User Schema</h1>
+    <pre>{{ schema }}</pre>
   </div>
 </template>
 
 <script setup>
-import { useAppConfig } from '#app'
+import schema from '#build/schema/nuxt.schema'
 </script>
