@@ -24,6 +24,7 @@ declare module '@nuxt/schema' {
     ['$schema']: NuxtConfigSchema
   }
   interface NuxtHooks {
+    'schema:extend': (schemas: SchemaDefinition[]) => void
     'schema:resolved': (schema: Schema) => void
     'schema:beforeWrite': (schema: Schema) => void
     'schema:written': () => void
@@ -125,6 +126,9 @@ export default defineNuxtModule({
         }
       }
 
+      // Allow hooking to extend custom schemas
+      await nuxt.hooks.callHook('schema:extend', schemas)
+
       // Merge config sources and resolve schema
       // @ts-expect-error
       const mergedSchema = _defu(...schemas) as Schema
@@ -134,7 +138,7 @@ export default defineNuxtModule({
       )
       const schema = _defu(userSchema, mergedSchema) as Schema
 
-      // Allow hooking
+      // Allow hooking to extend resolved schema
       await nuxt.hooks.callHook('schema:resolved', schema)
 
       return schema

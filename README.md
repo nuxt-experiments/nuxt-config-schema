@@ -25,9 +25,7 @@ yarn add nuxt-config-schema
 
 ```js
 export default defineNuxtConfig({
-  modules: [
-    'nuxt-config-schema'
-  ]
+  modules: ['nuxt-config-schema'],
 })
 ```
 
@@ -37,13 +35,13 @@ export default defineNuxtConfig({
 export default defineNuxtConfigSchema({
   appConfig: {
     test2: {
-      $default: 'from nuxt.schema'
-    }
+      $default: 'from nuxt.schema',
+    },
   },
   /** Config schema for another integration */
   anotherConfig: {
-    aTest: '123'
-  }
+    aTest: '123',
+  },
 })
 ```
 
@@ -51,7 +49,8 @@ export default defineNuxtConfigSchema({
 
 You can access generated schema (json, markdown and types) from `.nuxt/schema/` directory and also hooks below:
 
-- `schema:resolved(schema)`: Extend resolved schema (first call after `modules:done` hook)
+- `schema:extend(schemas)`: Extend schema defenitions (first call after `modules:done` hook)
+- `schema:resolved(schema)`: Extend resolved schema after merging (first call after `modules:done` hook)
 - `schema:beforeWrite(schema)`: Extend resolved schema just before writing to filesystem (called after `build:done` hook)
 - `schema:written`: Hook will be called when schema has been written and updated to filesystem
 
