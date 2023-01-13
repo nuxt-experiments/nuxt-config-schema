@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.4.1
+
+
+### 🚀 Enhancements
+
+  - `schema:extend` hook (6763c7b)
+
+### 🩹 Fixes
+
+  - Extend schema defenitions before being resolved (6331cf5)
+
+### 📖 Documentation
+
+  - Add proposal (117c2ff)
+
+### 🏡 Chore
+
+  - Use changelogen (5396943)
+  - Update script (97ade77)
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+- Sébastien Chopin <seb@nuxtlabs.com>
+
 ## [0.4.0](https://github.com/pi0/nuxt-config-schema/compare/v0.3.8...v0.4.0) (2023-01-03)
 
 
