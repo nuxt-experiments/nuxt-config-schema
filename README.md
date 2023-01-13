@@ -49,7 +49,7 @@ export default defineNuxtConfigSchema({
 
 You can access generated schema (json, markdown and types) from `.nuxt/schema/` directory and also hooks below:
 
-- `schema:extend(schemas)`: Extend schema defenitions (first call after `modules:done` hook)
+- `schema:extend(schemaDefs)`: Extend schema defenitions (first call after `modules:done` hook)
 - `schema:resolved(schema)`: Extend resolved schema after merging (first call after `modules:done` hook)
 - `schema:beforeWrite(schema)`: Extend resolved schema just before writing to filesystem (called after `build:done` hook)
 - `schema:written`: Hook will be called when schema has been written and updated to filesystem

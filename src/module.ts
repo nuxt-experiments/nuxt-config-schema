@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import { writeFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'pathe'
-import { createDefu } from 'defu'
+import { defu } from 'defu'
 import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import {
   resolveSchema as resolveUntypedSchema,
@@ -62,14 +62,6 @@ export default defineNuxtModule({
       },
     })
 
-    // Create custom merger to dedup defaults in arrays
-    const _defu = createDefu((obj, key, value) => {
-      if (Array.isArray(obj[key]) && Array.isArray(value)) {
-        ;(obj as any)[key] = Array.from(new Set([...obj[key], ...value]))
-        return true
-      }
-    })
-
     // Register module types
     nuxt.hook('prepare:types', (ctx) => {
       ctx.references.push({ path: 'nuxt-config-schema' })
@@ -97,13 +89,13 @@ export default defineNuxtModule({
       globalThis.defineNuxtConfigSchema = (val: any) => val
 
       // Load schema from layers
-      const schemas: Schema[] = []
+      const schemaDefs: SchemaDefinition[] = [nuxt.options.$schema]
       for (const layer of nuxt.options._layers) {
         const filePath = await resolver.resolvePath(
           resolve(layer.config.rootDir, 'nuxt.schema')
         )
         if (filePath && existsSync(filePath)) {
-          let loadedConfig
+          let loadedConfig: SchemaDefinition
           try {
             loadedConfig = _require(filePath)
           } catch (err) {
@@ -115,28 +107,20 @@ export default defineNuxtModule({
             )
             continue
           }
-          const lastLayerDefaults = schemas.length
-            ? (schemas[schemas.length - 1].default as any)
-            : {}
-          const schema = await resolveUntypedSchema(
-            loadedConfig,
-            lastLayerDefaults
-          )
-          schemas.push(schema)
+          schemaDefs.push(loadedConfig)
         }
       }
 
       // Allow hooking to extend custom schemas
-      await nuxt.hooks.callHook('schema:extend', schemas)
+      await nuxt.hooks.callHook('schema:extend', schemaDefs)
 
-      // Merge config sources and resolve schema
-      // @ts-expect-error
-      const mergedSchema = _defu(...schemas) as Schema
-      const userSchema = await resolveUntypedSchema(
-        nuxt.options.$schema,
-        mergedSchema.default as any
+      // Resolve and merge schemas
+      const schemas = await Promise.all(
+        schemaDefs.map((schemaDef) => resolveUntypedSchema(schemaDef))
       )
-      const schema = _defu(userSchema, mergedSchema) as Schema
+      // @ts-expect-error
+      // Merge after normalazation
+      const schema = defu(...schemas)
 
       // Allow hooking to extend resolved schema
       await nuxt.hooks.callHook('schema:resolved', schema)
