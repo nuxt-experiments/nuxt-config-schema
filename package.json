@@ -26,9 +26,9 @@
     "@nuxt/kit": "^3.0.0",
     "changelogen": "^0.4.0",
     "defu": "^6.1.1",
-    "jiti": "^1.16.0",
+    "jiti": "^1.16.2",
     "pathe": "^1.0.0",
-    "untyped": "^1.2.1"
+    "untyped": "^1.2.2"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.1.1",
