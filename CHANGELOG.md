@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.4.3
+
+
+### 🚀 Enhancements
+
+  - Detect and auto disable for 3.1.0 (0a9f75b)
+
+### 🩹 Fixes
+
+  - Pin conflicting types (dd7ed39)
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+
 ## v0.4.2
 
 
