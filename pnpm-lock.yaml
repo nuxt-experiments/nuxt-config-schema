@@ -4,7 +4,7 @@ specifiers:
   '@nuxt/eslint-config': ^0.1.1
   '@nuxt/kit': ^3.0.0
   '@nuxt/module-builder': ^0.2.1
-  '@nuxt/schema': npm:@nuxt/schema-edge@latest
+  '@nuxt/schema': 3.0.0
   '@types/node': ^18.11.9
   changelogen: ^0.4.0
   defu: ^6.1.1
@@ -26,7 +26,7 @@ dependencies:
 devDependencies:
   '@nuxt/eslint-config': 0.1.1_eslint@8.32.0
   '@nuxt/module-builder': 0.2.1
-  '@nuxt/schema': /@nuxt/schema-edge/3.0.1-rc.0-27908301.1af319e
+  '@nuxt/schema': 3.0.0
   '@types/node': 18.11.18
   eslint: 8.32.0
   nuxt: /nuxt3/3.0.1-rc.0-27908301.1af319e_tjxknrp5okovqtrxh5aihvdm5y

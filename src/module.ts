@@ -13,7 +13,6 @@ import type { Schema, SchemaDefinition } from 'untyped'
 import untypedPlugin from 'untyped/babel-plugin'
 import jiti from 'jiti'
 
-// TODO: Merge with raw schema of Nuxt for better type hints
 export type NuxtConfigSchema = SchemaDefinition
 
 declare module '@nuxt/schema' {
