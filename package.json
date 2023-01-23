@@ -33,10 +33,10 @@
   "devDependencies": {
     "@nuxt/eslint-config": "^0.1.1",
     "@nuxt/module-builder": "^0.2.1",
-    "@nuxt/schema": "^3.0.0",
+    "@nuxt/schema": "npm:@nuxt/schema-edge@latest",
     "@types/node": "^18.11.9",
     "eslint": "^8.27.0",
-    "nuxt": "^3.0.0",
+    "nuxt": "npm:nuxt3@latest",
     "typescript": "^4.9.4"
   }
 }

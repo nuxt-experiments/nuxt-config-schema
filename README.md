@@ -4,7 +4,9 @@ This is a proof of concept module for a feature in Nuxt 3 that automatically inf
 
 Schema can be defined in `nuxt.schema.ts` or `$schema` field in `nuxt.config.ts`.
 
-Read the [proposal for Nuxt 3](https://github.com/nuxt/framework/issues/10086)
+Read the [proposal for Nuxt 3](https://github.com/nuxt/nuxt/issues/15592)
+
+This experiment is landed to Nuxt 3 core since 3.1.0 (https://github.com/nuxt/nuxt/pull/18410)
 
 ## Usage
 

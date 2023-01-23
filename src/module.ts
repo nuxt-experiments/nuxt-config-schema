@@ -37,9 +37,20 @@ declare global {
 
 export default defineNuxtModule({
   meta: {
-    name: 'nuxt-config-schema',
+    name: 'nuxt-config-schema-compat',
   },
   async setup(options, nuxt) {
+    // Enable experimental flag when supported version of Nuxt detected
+    // https://github.com/nuxt/nuxt/pull/18410
+    // @ts-ignore
+    if (nuxt.options.experimental.configSchema !== undefined /* >= 3.1.0 */) {
+      // @ts-ignore
+      nuxt.options.experimental.configSchema = true
+      // @ts-ignore
+      globalThis.defineNuxtConfigSchema = (val: any) => val
+      return
+    }
+
     const resolver = createResolver(import.meta.url)
 
     // Initialize untyped/jiti loader
