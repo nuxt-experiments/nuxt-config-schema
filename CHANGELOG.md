@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.4.4
+
+
+### 🏡 Chore
+
+  - Add `@deprecated` for `defineNuxtConfigSchema` (88f6a7d)
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+
 ## v0.4.3
 
 
