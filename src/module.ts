@@ -31,6 +31,7 @@ declare module '@nuxt/schema' {
 }
 
 declare global {
+  /** @deprecated Use Nuxt 3.1 with defineNuxtSchema */
   const defineNuxtConfigSchema: (schema: NuxtConfigSchema) => NuxtConfigSchema
 }
 
