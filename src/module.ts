@@ -176,4 +176,4 @@ declare module '@nuxt/schema' {
       await writeFile(typesPath, types, 'utf8')
     }
   },
-})
+}) as any
