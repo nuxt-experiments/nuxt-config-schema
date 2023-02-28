@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.4.5
+
+
+### 🩹 Fixes
+
+  - Avoid circular type definition (#6)
+
+### ❤️  Contributors
+
+- Daniel Roe <daniel@roe.dev>
+
 ## v0.4.4
 
 
