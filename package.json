@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0",
-    "changelogen": "^0.4.1",
     "defu": "^6.1.2",
     "jiti": "^1.16.2",
     "pathe": "^1.0.0",
@@ -35,6 +34,7 @@
     "@nuxt/module-builder": "^0.2.1",
     "@nuxt/schema": "3.0.0",
     "@types/node": "^18.11.9",
+    "changelogen": "^0.4.1",
     "eslint": "^8.27.0",
     "nuxt": "npm:nuxt3@latest",
     "typescript": "^4.9.4"
