@@ -1,3 +1,6 @@
+> [!NOTE]
+> This repository is archived. It was an experiment and is no longer maintained.
+
 # Nuxt Config Schema
 
 This is a proof of concept module for a feature in Nuxt 3 that automatically infers and generates schema based on user provided configuration from several sources using [unjs/untyped](https://github.com/unjs/untyped) and supports extending layers.
